@@ -1,7 +1,8 @@
-import React, { useState, useEffect} from "react"
+import React, { useState, useEffect } from "react"
 import Axios from "axios";
+import { getDayIndexByName, getSpotsByDayId } from "helpers/selectors";
 
-export default function DayListItem(initialMode) {
+export default function useApplicationData(initialMode) {
   const [state, setState] = useState({
     day: "Monday",    //default selected DayListItem is "Monday"
     days: [],
@@ -9,9 +10,38 @@ export default function DayListItem(initialMode) {
     interviewers: {},
   });
 
+
+  // this useEffect updates spots remaining
+  // it will only run when state.appointments are updated. 
+  // since appointments are ONLY update when the ajax COMPLETES 
+  // this will only run once the request is successful either on
+  // delete or add.
+  useEffect(() => {
+    const dayId = getDayIndexByName(state, state.day)
+    if (dayId) {
+      const day = {
+        ...state.days[dayId],
+        appointments: [...state.days[dayId].appointments],
+        interviewers: [...state.days[dayId].interviewers],
+        spots: getSpotsByDayId(state, dayId)
+      }
+      const newDays = [
+        ...state.days
+      ]
+      newDays[dayId] = { ...day };
+
+      setState((prev) => {
+        return {
+          ...prev, days: newDays
+        }
+      })
+    }
+  }, [state.appointments])
+
   // setDay is passed as onChange Prop to DayList. Called when a DayListItem 
   // is clicked on the side bar
   const setDay = (day) => { setState(prev => { return { ...prev, day } }) };
+  console.log(state);////////////////////////// REMOVE ME
 
   const bookInterview = (id, interview) => {
     const appointment = {
@@ -64,5 +94,5 @@ export default function DayListItem(initialMode) {
       .catch(err => console.log(err));
   }, []);
 
-  return {state,setDay,bookInterview,cancelInterview};
+  return { state, setDay, bookInterview, cancelInterview };
 }

@@ -31,7 +31,7 @@ export function getInterview(state, interview) {
     ...interview,
     interviewer: { ...state.interviewers[interview.interviewer] }
   };
-  
+
   return modifiedInterview
 }
 
@@ -49,13 +49,30 @@ export function getInterviewersForDay(state, day) {
 
   const interviewersIdForDay = filteredDay.interviewers;
 
-  for (const i of interviewersIdForDay)
-  {
-    if (state.interviewers[i])
-    {
-      interviewersForDay = [...interviewersForDay,state.interviewers[i]]
+  for (const i of interviewersIdForDay) {
+    if (state.interviewers[i]) {
+      interviewersForDay = [...interviewersForDay, state.interviewers[i]]
     }
   }
 
   return interviewersForDay;
+}
+
+
+export function getDayIndexByName(state, dayName) {
+  for (const day in state.days) {
+    if (state.days[day].name === dayName) {
+      return day;
+    }
+  }
+}
+
+export function getSpotsByDayId(state, dayId) {
+  let count = 0;
+  for (const appointment of state.days[dayId].appointments) {
+    if (state.appointments[appointment].interview==null) {
+      count++;
+    }
+  }
+  return count;
 }
