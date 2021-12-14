@@ -1,56 +1,41 @@
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import "components/Application.scss";
-import Axios from "axios";
 
-import DayList from "components/DayList"
+import DayList from "components/DayList";
 import Appointment from "./Appointment";
-import { getAppointmentsForDay, getInterview, getInterviewersForDay} from "helpers/selectors";
+import useApplicationData from "hooks/useApplicationData"
+import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
 
 export default function Application(props) {
 
-  const [state, setState] = useState({
-    day: "Monday",
-    days: [],
-    appointments: {},
-    interviewers: {},
-  });
+  const {
+    state,
+    setDay,
+    bookInterview,
+    cancelInterview
+  } = useApplicationData();
 
-  const setDay = (day) => { setState(prev => { return { ...prev, day } }) };
-
-  useEffect(() => {
-    const getDataPromises = [Axios.get('http://localhost:8001/api/days'),
-    Axios.get('http://localhost:8001/api/appointments'),
-    Axios.get('http://localhost:8001/api/interviewers')]
-
-    Promise.all(getDataPromises)
-      .then((all) => {
-        setState((prev) => {
-          return {
-            ...prev,
-            days: all[0].data,
-            appointments: all[1].data,
-            interviewers: all[2].data,
-          }
-        });
-      });
-  }, [])
-  
+  //structures appointment data for currently selected day
   const dailyAppointments = getAppointmentsForDay({
     ...state
   }, state.day);
 
+  //structures interviewer data for currently selected day
+  const interviewersForDay = getInterviewersForDay(state, state.day);
+
   const appointmentList = dailyAppointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
-    const interviewersForDay = getInterviewersForDay(state, state.day);
     return (
       <Appointment
         key={appointment.id}
         id={appointment.id}
         time={appointment.time}
         interview={interview}
-        interviewersForDay = {interviewersForDay}
+        interviewersForDay={interviewersForDay}
+        bookInterview={bookInterview}
+        onDelete={cancelInterview}
       />
     )
 
