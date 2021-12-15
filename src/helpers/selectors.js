@@ -1,3 +1,9 @@
+/**
+ * @param {object} state - takes in the state object created in useApplicationData.js
+ * @param {string} day - takes in name of the day ie Monday, Tuesday...
+ * 
+ * @returns an array of appointment objects for the provided day
+ */
 export function getAppointmentsForDay(state, day) {
   let appointmentsForDay = [];
 
@@ -22,6 +28,13 @@ export function getAppointmentsForDay(state, day) {
   return appointmentsForDay
 }
 
+/**
+ * @param {object} state takes in the state object created in useApplicationData.js
+ * @param {object} interview takes in the interview object fetched from appointments data from database
+ * 
+ * @returns a new interview object formatted correctly for appointment component to use. 
+ *          constains full interviewer object not just the interviewer id.
+ */
 export function getInterview(state, interview) {
   if (!interview) {
     return null;
@@ -31,11 +44,15 @@ export function getInterview(state, interview) {
     ...interview,
     interviewer: { ...state.interviewers[interview.interviewer] }
   };
-
   return modifiedInterview
 }
 
-
+/**
+ * 
+ * @param {object} state takes in the state object created in useApplicationData.js
+ * @param {string} day takes in name of the day ie Monday, Tuesday...
+ * @returns an array containing interviewer objects for the specified day
+ */
 export function getInterviewersForDay(state, day) {
   let interviewersForDay = [];
 
@@ -58,7 +75,12 @@ export function getInterviewersForDay(state, day) {
   return interviewersForDay;
 }
 
-
+/**
+ * @param {object} state takes in the state object created in useApplicationData.js
+ * @param {string} day takes in name of the day ie Monday, Tuesday...
+ * 
+ * @returns the index of the the specified day in days
+ */
 export function getDayIndexByName(state, dayName) {
   for (const day in state.days) {
     if (state.days[day].name === dayName) {
@@ -67,10 +89,21 @@ export function getDayIndexByName(state, dayName) {
   }
 }
 
-export function getSpotsByDayId(state, dayId) {
+
+/**
+ * 
+ * @param {object} appointments the appointment object from state
+ * @param {*} appointmentIds an array of appointment ids for the day
+ * @param {*} dayId the day id we are looking at
+ * 
+ * @returns the number of appointments with interview as null
+ */
+export function getSpotsByDayId(appointments,appointmentIds, dayId) {
   let count = 0;
-  for (const appointment of state.days[dayId].appointments) {
-    if (state.appointments[appointment].interview==null) {
+  for (const appointmentId of appointmentIds)
+  {
+    if(appointments[appointmentId].interview === null)
+    {
       count++;
     }
   }

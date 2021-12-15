@@ -17,6 +17,7 @@ export default function Application(props) {
     cancelInterview
   } = useApplicationData();
 
+
   //structures appointment data for currently selected day
   const dailyAppointments = getAppointmentsForDay({
     ...state
