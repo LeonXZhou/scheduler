@@ -19,7 +19,6 @@ export default function useApplicationData(initialMode) {
     const getDataPromises = [Axios.get('http://localhost:8001/api/days'),
     Axios.get('http://localhost:8001/api/appointments'),
     Axios.get('http://localhost:8001/api/interviewers')];
-
     Promise.all(getDataPromises)
       .then((all) => {
         setState((prev) => {
@@ -34,8 +33,10 @@ export default function useApplicationData(initialMode) {
       .catch(err => console.log(err));
   }, []);
 
+  //function for updating state when a interview is booked or edited. takes in an interview object
+  //and the id of the appointment to be updated
   const bookInterview = (id, interview) => {
-
+    //creating new appointment information
     const newAppointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -44,7 +45,7 @@ export default function useApplicationData(initialMode) {
       ...state.appointments,
       [id]: newAppointment
     };
-
+    //creating new days information
     const dayId = getDayIndexByName(state, state.day)
     const newDay = {
       ...state.days[dayId],
@@ -55,7 +56,6 @@ export default function useApplicationData(initialMode) {
     const newDays = [
       ...state.days
     ]
-
     newDays[dayId] = { ...newDay };
 
     return Axios.put(`http://localhost:8001/api/appointments/${id}`,
@@ -65,8 +65,10 @@ export default function useApplicationData(initialMode) {
       })
   };
 
+  //function for updating state when a interview is cancelled. takes in an interview object
+  //and the id of the appointment to be updated
   const cancelInterview = (id) => {
-
+    //creating new appointment information
     const newAppointment = {
       ...state.appointments[id],
       interview: null
@@ -75,7 +77,7 @@ export default function useApplicationData(initialMode) {
       ...state.appointments,
       [id]: newAppointment
     }
-
+    //creating new days information
     const dayId = getDayIndexByName(state, state.day)
     const newDay = {
       ...state.days[dayId],
@@ -86,7 +88,6 @@ export default function useApplicationData(initialMode) {
     const newDays = [
       ...state.days
     ]
-
     newDays[dayId] = { ...newDay };
 
     return Axios.delete(`http://localhost:8001/api/appointments/${id}`)

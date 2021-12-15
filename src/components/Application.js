@@ -26,6 +26,7 @@ export default function Application(props) {
   //structures interviewer data for currently selected day
   const interviewersForDay = getInterviewersForDay(state, state.day);
 
+  //creats an array of Appointment components for the currently selected day
   const appointmentList = dailyAppointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
     return (
