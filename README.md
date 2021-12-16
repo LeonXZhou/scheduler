@@ -26,8 +26,10 @@ Updated Home Screen
 !["Editing"](https://github.com/LeonXZhou/scheduler/blob/master/Docs/Screenshots/Updated.png)
 
 ## Setup
-
 Install dependencies with `npm install`.
+
+You will also need to seperately run a seperate resource server to handle api requests from this client side app for data persistance. The resource server used for development can be found here [link](https://github.com/LeonXZhou/scheduler-api)
+
 
 ## Running Webpack Development Server
 
