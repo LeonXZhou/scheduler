@@ -2,10 +2,14 @@
 
 
 ## Screenshots:
-Display when screen width is less than 1024px
-!["Narrow Display"](https://github.com/LeonXZhou/tweeter/blob/master/screenshots/Screenshot%20from%202021-11-18%2018-51-24.png)
-Display when screen width is more than 1024px alongside a sample error message.
-!["Wide display"](https://github.com/LeonXZhou/tweeter/blob/master/screenshots/Screenshot%20from%202021-11-18%2018-53-05.png)
+Initial Home Screen
+!["Home"](https://github.com/LeonXZhou/scheduler/blob/master/Docs/Screenshots/Homescreen.png)
+
+Edited Form Screen
+!["Editing"](https://github.com/LeonXZhou/scheduler/blob/master/Docs/Screenshots/Edit.png)
+
+Updated Home Screen
+!["Editing"](https://github.com/LeonXZhou/scheduler/blob/master/Docs/Screenshots/Updated.png
 
 ## Setup
 
